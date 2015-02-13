@@ -1,0 +1,105 @@
+<target name="set-env" unless="setenv.already.executed">
+
+
+	<property name="setenv.already.executed" value="true" />
+
+	<property name="app.config" value="prod" />
+	<property name="app.home" location=".." />
+
+	<property name="build.dir" location="${app.home}/build" />
+	<property name="project.home"
+		value="${app.home}/${ant.project.name}" />
+	<property name="build.project.dest"
+		value="${build.dir}/work/${ant.project.name}" />
+	<property name="tmp.archive.dir"
+		value="${build.dir}/tmp/${ant.project.name}.${app.config}" />
+	<property name="test.log.dir" value="${build.dir}/test" />
+
+	<mkdir dir="${build.dir}" />
+	<mkdir dir="${build.dir}/work/" />
+	<mkdir dir="${build.dir}/dist" />
+	<mkdir dir="${build.dir}/app" />
+	<mkdir dir="${test.log.dir}" />
+
+	<echo level="info" message="Building ${ant.project.name}" />
+
+
+	<path id="classpath">
+
+		<!-- third party libs -->
+		<fileset dir="${build.dir}/..">
+			<include name="*/lib/**/*.jar" />
+		</fileset>
+
+		<!-- include application code -->
+		<fileset dir="${build.dir}/dist">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+</target>
+
+
+<target name="scs-checkout">
+	<delete dir="${project.home}" />
+</target>
+
+
+<target name="config-create" if="app.config">
+	<echo level="info" message="Selecting '${app.config}' config set" />
+
+	<mkdir dir="${tmp.archive.dir}" />
+	
+	<property name="app.config.dir" value="config" />
+
+	<copy todir="${tmp.archive.dir}">
+		<fileset dir="${build.dir}/..">
+			<patternset refid="app.configs" />
+		</fileset>
+		<!-- snaffle parent dir -->
+		<mapper type="regexp" from="([^\\/]+)[\\/](.+)[\\/](.+)"
+			to="${app.config.dir}/\3" />
+	 	<filterset>
+			<filtersfile
+				file="${build.dir}/build.${app.config}.properties" />
+		</filterset>
+
+	</copy>
+
+</target>
+
+<target name="lib-create" if="app.lib.create">
+	<mkdir dir="${tmp.archive.dir}.libs" />
+
+	<copy todir="${tmp.archive.dir}.libs">
+		<fileset dir="${build.dir}/..">
+			<patternset refid="app.lib" />
+		</fileset>
+		<mapper type="regexp" from="(.*)[\\/]lib[\\/](.*)"
+			to="${app.lib.dir}/\2" />
+	</copy>
+
+	<zip
+		destfile="${build.dir}/app/${ant.project.name}.${app.config}.libs.zip"
+		update="true" duplicate="fail" basedir="${tmp.archive.dir}.libs" />
+</target>
+
+<target name="lib-include" if="app.lib.include">
+	<mkdir dir="${tmp.archive.dir}" />
+
+	<copy todir="${tmp.archive.dir}">
+		<fileset dir="${build.dir}/..">
+			<patternset refid="app.lib" />
+		</fileset>
+		<mapper type="regexp" from="(.*)[\\/]lib[\\/](.*)"
+			to="${app.lib.dir}/\2" />
+	</copy>
+</target>
+
+<target name="code-create">
+	<mkdir dir="${tmp.archive.dir}" />
+	<copy todir="${tmp.archive.dir}/${app.lib.dir}">
+		<fileset dir="${build.dir}/dist">
+			<patternset refid="app.code" />
+		</fileset>
+	</copy>
+</target>

@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<!DOCTYPE project [
+<!ENTITY properties SYSTEM "xml/properties.xml">
+<!ENTITY taskdefs SYSTEM "xml/taskdefs.xml">
+<!ENTITY output SYSTEM "xml/output-jar.xml">
+]>
+
+<project name="NTLMProxy" default="dist">
+
+
+      &properties;
+      &taskdefs;
+      &output;
+	
+
+</project>
+
+
+

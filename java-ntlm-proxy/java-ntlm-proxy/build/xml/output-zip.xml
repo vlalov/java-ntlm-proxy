@@ -1,0 +1,21 @@
+<target name="call-local-dist" if="app.local.dist">
+	<antcall target="local-dist" />
+</target>
+
+<target name="dist"
+	depends="set-env,config-create,code-create,lib-create">
+
+	<antcall target="call-local-dist" />
+	<zip
+		destfile="${build.dir}/app/${ant.project.name}_${app.config}.zip"
+		update="true" duplicate="fail">
+		<fileset dir="${tmp.archive.dir}" />
+	</zip>
+</target>
+
+<target name="clean" depends="set-env">
+	<delete
+		file="${build.dir}/app/${ant.project.name}_${app.config}.zip" />
+	<delete dir="${tmp.archive.dir}" />
+</target>
+

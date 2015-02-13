@@ -1,0 +1,30 @@
+<property name="app.lib.dir" value="lib" />
+<property name="app.config.dir" value="" />
+
+<target name="dist"
+	depends="set-env,config-create,code-create,lib-include">
+
+	
+	<property name="build.manifest" value="${project.home}/MANIFEST.MF"/>
+
+	<copy todir="${tmp.archive.dir}">
+		<fileset dir="${build.dir}/standalone" />
+	</copy>
+
+	<mkdir dir="${tmp.archive.dir}/main" />
+	<jar destfile="${tmp.archive.dir}/main/main.jar"
+		manifest="${build.manifest}"/>
+
+	<jar
+		destfile="${build.dir}/app/${ant.project.name}.${app.config}.jar"
+		update="true" duplicate="fail" basedir="${tmp.archive.dir}"
+		manifest="${build.dir}/standalone/META-INF/MANIFEST.MF" />
+
+</target>
+
+<target name="clean" depends="set-env">
+	<delete
+		file="${build.dir}/app/${ant.project.name}.${app.config}.jar" />
+	<delete dir="${tmp.archive.dir}" />
+</target>
+

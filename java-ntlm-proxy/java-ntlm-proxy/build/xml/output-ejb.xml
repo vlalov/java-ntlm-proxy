@@ -1,0 +1,37 @@
+<target name="dist-full" depends="clean,scs-checkout,dist" />
+
+<target name="dist" depends="compile" description="build war file">
+	<copy todir="${build.project.dest}/META-INF">
+		<fileset dir="${project.home}/src/META-INF" />
+	</copy>
+
+	<jar destfile="${build.dir}/dist/${ant.project.name}.jar"
+		basedir="${build.project.dest}" update="true" duplicate="fail"
+		manifest="${build.manifest}" />
+</target>
+
+<target name="call-compile-local" if="build.compile.local">
+	<antcall target="compile-local" />
+</target>
+
+<target name="compile" depends="set-env">
+	<mkdir dir="${build.project.dest}" />
+
+	<!-- build script depends on these two dirs being present-->
+	<mkdir dir="${project.home}/lib" />
+	<mkdir dir="${project.home}/config" />
+
+	<mkdir dir="${build.project.dest}/ContextRoot/WEB-INF/classes" />
+	<javac srcdir="${project.home}/src" destdir="${build.project.dest}"
+		debug="${debug}" nowarn="${nowarn}" source="${source}"
+		fork="${javac.fork}">
+		<classpath refid="classpath" />
+		<include name="**/*.java" />
+	</javac>
+	<antcall target="call-compile-local" />
+</target>
+
+<target name="clean" depends="set-env">
+	<delete dir="${build.project.dest}" />
+	<delete dir="${build.dir}/dist/${ant.project.name}.jar" />
+</target>

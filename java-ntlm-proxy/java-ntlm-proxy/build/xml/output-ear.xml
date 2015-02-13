@@ -1,0 +1,20 @@
+<property name="app.lib.dir" value="." />
+
+
+
+<target name="dist"
+	depends="set-env,config-create,code-create,lib-create,lib-include">
+
+
+	<ear appxml="${app.xml}"
+		destfile="${build.dir}/app/${ant.project.name}_${app.config}.ear"
+		update="true" duplicate="fail" basedir="${tmp.archive.dir}" />
+
+</target>
+
+<target name="clean" depends="set-env">
+	<delete
+		file="${build.dir}/app/${ant.project.name}_${app.config}.ear" />
+	<delete dir="${tmp.archive.dir}" />
+</target>
+

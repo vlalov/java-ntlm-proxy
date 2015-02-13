@@ -1,0 +1,44 @@
+<!-- Give user a chance to override without editing this file
+	(and without typing -D each time it compiles it) -->
+<property file="${axis.home}/build.properties" />
+<property file="${user.home}/build.properties" />
+
+<!-- debug flag for ant javac, values are "on" and "off" -->
+<property name="debug" value="on" />
+<property name="nowarn" value="off" />
+
+<!-- <property name="build.compiler" value="jikes"/> -->
+
+<!-- what gets pulled in to the binaries: everything -->
+<property name="debuglevel" value="lines,vars,source" />
+<property name="deprecation" value="true" />
+<property name="source" value="1.4" />
+<property name="target" value="1.4" />
+
+<!-- directories for output -->
+
+<!-- Place Holder for proxy settings -->
+<property name="http.proxyHost" value="" />
+<property name="http.proxyPort" value="" />
+<property name="http.nonProxyHosts" value="localhost" />
+<property name="http.proxyUser" value="" />
+<property name="http.proxyPassword" value="" />
+<property name="socks.proxyHost" value="" />
+<property name="socks.proxyPort" value="1080" />
+
+<property name="javac.fork" value="no" />
+<property name="foreach.fork" value="no" />
+<property name="ant.inheritAll" value="false" />
+<property name="ant.inheritRefs" value="false" />
+
+<!-- Starteam settings -->
+<property name="starteam.server" value="137.172.75.58" />
+<property name="starteam.port" value="49207" />
+<property name="starteam.project" value="FMMG" />
+<property name="starteam.view" value="NTG View" />
+<property name="starteam.user" value="matthewp" />
+<property name="starteam.passwd" value="******" />
+
+<property name="config.exclude"
+	value="**/*.prod **/*.test **/*.dev **/*.stg" />
+<property name="config.template.exclude" value="**/*.template" />

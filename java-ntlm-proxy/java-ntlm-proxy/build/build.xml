@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+
+<project name="CorporateBrands" default="all">
+
+
+	<target name="prereq" unless="skip.prereq">
+		<ant antfile="NTLMProxy.xml" target="${build.target}"/> 
+
+	</target>
+	<target name="dist" depends="prereq">
+		<!-- subprojects in order of dependency -->
+		<ant antfile="NTLMProxyApp.xml" target="${build.target}"/>	
+	</target>
+
+	<target name="all">
+		<property name="build.target" value="dist" />
+		<antcall target="dist" />
+	</target>
+
+	<target name="clean">
+		<property name="build.target" value="clean" />
+		<antcall target="all" />
+
+		<!-- just to be safe -->
+		<delete dir="dist" />
+		<delete dir="work" />
+		<delete dir="tmp" />
+		<delete dir="app" />
+	</target>
+
+	<target name="dist-full">
+		<property name="build.target" value="dist-full" />
+		<antcall target="all" />
+	</target>
+
+	<target name="clean-apps">
+		<delete dir="app" />
+		<delete dir="tmp" />
+	</target>
+
+
+	<target name="release">
+		<move file="app/NTLMProxyApp.prod.jar" tofile="app/NTLMProxy.jar"/>
+		<copy file="../NTLMProxy/ntlm-proxy.properties" todir="app"/>
+		<zip basedir="app" destfile="NTLMProxy-${release.version}.zip"
+			includes="NTLMProxy.jar,ntlm-proxy.properties"/>
+	</target>						
+	<target name="ftp">
+		<ftp server="upload.sf.net" remotedir="incoming" userid="anonymous" password="" >
+			<fileset dir=".">
+				<include name="NTLMProxy-${release.version}.zip"/>
+			</fileset>
+		</ftp>
+	</target>						
+</project>
+

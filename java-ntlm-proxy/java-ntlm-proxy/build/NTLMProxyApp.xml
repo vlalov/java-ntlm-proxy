@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<!DOCTYPE project [
+<!ENTITY properties SYSTEM "xml/properties.xml">
+<!ENTITY taskdefs SYSTEM "xml/taskdefs.xml">
+<!ENTITY output SYSTEM "xml/output-app.xml">
+]>
+
+<project name="NTLMProxyApp" default="dist">
+
+
+	<property name="build.manifest" value="../NTLMProxy/MANIFEST.MF"/>
+
+	<property name="app.lib.include" value="ok"/>
+
+	<patternset id="app.code" includes="NTLMProxy.jar"/>
+
+	<patternset id="app.configs">
+		<include name="NTLMProxy/config/*"/>
+	</patternset>
+
+	<patternset id="app.lib">
+		<include name="NTLMProxy/lib/*.jar"/>
+	</patternset>
+
+      &properties;
+      &taskdefs;
+      &output;
+	
+
+
+
+</project>
+
+
+
